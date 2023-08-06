@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-instanote-dev-13717-authRole",
+      "UnauthRoleArn": "arn:aws:iam::223108796204:role/amplify-instanote-dev-13717-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::223108796204:role/amplify-instanote-dev-13717-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-instanote-dev-13717-deployment",
+      "UnauthRoleName": "amplify-instanote-dev-13717-unauthRole",
+      "StackName": "amplify-instanote-dev-13717",
+      "StackId": "arn:aws:cloudformation:us-east-1:223108796204:stack/amplify-instanote-dev-13717/7483ea10-3434-11ee-9103-0aa8e396fddd",
+      "AmplifyAppId": "d27y8ep7bju6x3"
+    },
+    "categories": {
+      "auth": {
+        "instanote2f02e351": {}
+      }
+    }
+  }
+}
