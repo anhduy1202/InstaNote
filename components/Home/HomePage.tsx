@@ -1,20 +1,30 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAuthenticator } from "@aws-amplify/ui-react";
-import axios from "axios";
+import { API } from "aws-amplify";
 import Task from "../Task/Task";
+import { Loading } from "../Loader/Loader";
 
 const HomePage = () => {
   const { user, signOut } = useAuthenticator((context) => [context.user]);
   const [input, setInput] = useState<string>("");
-  const [taskList, setTaskList] = useState<string[]>([
-    "Heat a pan or wok over medium-high heat. Add cooking oil.",
-    "Saute minced garlic and ginger until fragrant.",
-    "Add your choice of protein (chicken, shrimp, tofu, or beaten eggs). Cook until fully done.",
-    "Add chopped vegetables (carrots, peas, bell peppers, onions). Stir-fry until they are tender-crisp.",
-  ]);
+  const [isLoading, setLoading] = useState<boolean>(false);
+  const [taskList, setTaskList] = useState<string[]>([]);
+  async function postData() {
+    setLoading(true);
+    const apiName = "apia67ae079";
+    const path = "/tasks";
+    const myInit = {
+      body: {
+        prompt: input,
+      },
+    };
+    return await API.post(apiName, path, myInit);
+  }
   const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const res = await axios.post("/", input);
+    const response = await postData();
+    setTaskList(response.data);
+    setLoading(false);
   };
   return (
     <section className="flex items-center flex-col gap-10 mt-10 text-lg">
@@ -26,15 +36,24 @@ const HomePage = () => {
           type="text"
           placeholder="Ex: Make egg fried rice"
         />
-        <button type="submit" className="p-1 bg-blue-400">
+        <button
+          type='submit'
+          className="p-1 bg-blue-400"
+        >
           Create
         </button>
       </form>
-      <div className="grid md:grid-cols-3 gap-4">
-        {taskList.map((task, id) => {
-          return <Task key={id} task={task} id={id} />;
-        })}
-      </div>
+      {isLoading ? (
+        <>
+          <Loading />
+        </>
+      ) : (
+        <div className="grid md:grid-cols-3 gap-4">
+          {taskList?.map((task, id) => {
+            return <Task key={id} task={task} id={id} />;
+          })}
+        </div>
+      )}
     </section>
   );
 };

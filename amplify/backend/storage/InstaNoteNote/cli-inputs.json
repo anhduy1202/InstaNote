@@ -1,0 +1,12 @@
+{
+  "resourceName": "InstaNoteNote",
+  "tableName": "Note",
+  "partitionKey": {
+    "fieldName": "id",
+    "fieldType": "number"
+  },
+  "gsi": [],
+  "triggerFunctions": [
+    "InstaNoteNoteTrigger56755564"
+  ]
+}

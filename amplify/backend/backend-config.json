@@ -1,4 +1,20 @@
 {
+  "api": {
+    "apia67ae079": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "instanote63435f06"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
+    }
+  },
   "auth": {
     "instanote2f02e351": {
       "customAuth": false,
@@ -23,6 +39,112 @@
       },
       "providerPlugin": "awscloudformation",
       "service": "Cognito"
+    }
+  },
+  "function": {
+    "InstaNoteNoteTrigger56755564": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn",
+            "StreamArn"
+          ],
+          "category": "storage",
+          "resourceName": "InstaNoteNote"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "instanote63435f06": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributeEnvMap": {
+            "Arn": "TABLE_ARN",
+            "Name": "TABLE_NAME"
+          },
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "storage",
+          "resourceName": "InstaNoteNote"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "instanotelayer17fafae7": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "LambdaLayer"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_function_InstaNoteNoteTrigger56755564_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "InstaNoteNoteTrigger56755564"
+        }
+      ]
+    },
+    "AMPLIFY_function_InstaNoteNoteTrigger56755564_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "InstaNoteNoteTrigger56755564"
+        }
+      ]
+    },
+    "AMPLIFY_function_instanote63435f06_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "instanote63435f06"
+        }
+      ]
+    },
+    "AMPLIFY_function_instanote63435f06_openaiApiKey": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "instanote63435f06"
+        }
+      ]
+    },
+    "AMPLIFY_function_instanote63435f06_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "instanote63435f06"
+        }
+      ]
+    },
+    "AMPLIFY_function_instanotelayer17fafae7_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "instanotelayer17fafae7"
+        }
+      ]
+    },
+    "AMPLIFY_function_instanotelayer17fafae7_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "instanotelayer17fafae7"
+        }
+      ]
+    }
+  },
+  "storage": {
+    "InstaNoteNote": {
+      "providerPlugin": "awscloudformation",
+      "service": "DynamoDB"
     }
   }
 }

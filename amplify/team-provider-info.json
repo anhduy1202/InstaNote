@@ -9,11 +9,33 @@
       "UnauthRoleName": "amplify-instanote-dev-13717-unauthRole",
       "StackName": "amplify-instanote-dev-13717",
       "StackId": "arn:aws:cloudformation:us-east-1:223108796204:stack/amplify-instanote-dev-13717/7483ea10-3434-11ee-9103-0aa8e396fddd",
-      "AmplifyAppId": "d27y8ep7bju6x3"
+      "AmplifyAppId": "d27y8ep7bju6x3",
+      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-instanote-dev-13717-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json"
     },
     "categories": {
       "auth": {
         "instanote2f02e351": {}
+      },
+      "function": {
+        "instanote63435f06": {
+          "deploymentBucketName": "amplify-instanote-dev-13717-deployment",
+          "s3Key": "amplify-builds/instanote63435f06-562b6b486444316c4a73-build.zip",
+          "openaiApiKey": "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"
+        },
+        "InstaNoteNoteTrigger56755564": {
+          "deploymentBucketName": "amplify-instanote-dev-13717-deployment",
+          "s3Key": "amplify-builds/InstaNoteNoteTrigger56755564-676f5161523568775378-build.zip"
+        },
+        "instanotelayer17fafae7": {
+          "deploymentBucketName": "amplify-instanote-dev-13717-deployment",
+          "s3Key": "amplify-builds/instanotelayer17fafae7-LambdaLayerVersionfb4b8a4c-build.zip"
+        }
+      },
+      "storage": {
+        "InstaNoteNote": {}
+      },
+      "api": {
+        "apia67ae079": {}
       }
     }
   }

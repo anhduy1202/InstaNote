@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "paths": {
+    "/tasks": {
+      "name": "/tasks",
+      "lambdaFunction": "instanote63435f06",
+      "permissions": {
+        "setting": "private",
+        "auth": [
+          "create",
+          "update",
+          "delete"
+        ]
+      }
+    }
+  }
+}
