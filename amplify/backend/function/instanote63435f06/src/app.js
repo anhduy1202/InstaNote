@@ -22,7 +22,7 @@ const express = require("express");
 const ddbClient = new DynamoDBClient({ region: process.env.TABLE_REGION });
 const ddbDocClient = DynamoDBDocumentClient.from(ddbClient);
 
-let tableName = "Note";
+let tableName = "Notes";
 if (process.env.ENV && process.env.ENV !== "NONE") {
   tableName = tableName + "-" + process.env.ENV;
 }
@@ -184,30 +184,34 @@ app.put(path, async function (req, res) {
 /************************************
  * HTTP post method for insert object *
  *************************************/
-
 app.post(path, async function (req, res) {
-  // if (userIdPresent) {
-  //   req.body["userId"] =
-  //     req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
-  // }
+  if (userIdPresent) {
+    req.body["userId"] =
+      req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
+  }
 
-  // let putItemParams = {
-  //   TableName: tableName,
-  //   Item: req.body,
-  // };
+  let putItemParams = {
+    TableName: tableName,
+    Item: {
+      id: Date.now().toString(36),
+      content: req.body["prompt"],
+      username: req.body["userId"],
+      favorite: false,
+    },
+  };
   try {
     const response = await openai.createChatCompletion({
       model: "gpt-3.5-turbo",
       messages: [
         {
           role: "user",
-          content: `"This prompt may be written in mixed language, write me a step by step note labeled with number since I have to parse the response to "${req.body["prompt"]}", it's a note so keep it short and language friendly and the result should be in the same language of the given prompt"`,
+          content: `"This prompt may be written in mixed language, write me a step by step note labeled with number since I have to parse the response to "${req.body["prompt"]}", it's a note so keep it short and language friendly and the result should be in either Vietnamese or English"`,
         },
       ],
       temperature: 0.8,
       max_tokens: 256,
     });
-    // Split the string by the newline character ("\n") and remove any empty lines using filter()
+    // // Split the string by the newline character ("\n") and remove any empty lines using filter()
     const filteredResponse = response.data.choices[0].message.content
       .split("\n")
       .filter((step) => step.trim() !== "");
@@ -216,6 +220,8 @@ app.post(path, async function (req, res) {
     const finalResponse = filteredResponse.map((step) =>
       step.substring(step.indexOf(".") + 2)
     );
+    putItemParams.Item.content = finalResponse.join("\n");
+    let data = await ddbDocClient.send(new PutCommand(putItemParams));
     res.json({ data: finalResponse });
   } catch (err) {
     res.statusCode = 500;

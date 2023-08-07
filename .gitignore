@@ -46,6 +46,7 @@ build/
 dist/
 node_modules/
 awsconfiguration.json
+team-provider-info.json
 amplifyconfiguration.json
 amplifyconfiguration.dart
 amplify-build-config.json

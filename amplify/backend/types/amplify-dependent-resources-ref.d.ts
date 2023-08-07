@@ -18,13 +18,6 @@ export type AmplifyDependentResourcesAttributes = {
     }
   },
   "function": {
-    "InstaNoteNoteTrigger56755564": {
-      "Arn": "string",
-      "LambdaExecutionRole": "string",
-      "LambdaExecutionRoleArn": "string",
-      "Name": "string",
-      "Region": "string"
-    },
     "instanote63435f06": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
@@ -38,6 +31,14 @@ export type AmplifyDependentResourcesAttributes = {
   },
   "storage": {
     "InstaNoteNote": {
+      "Arn": "string",
+      "Name": "string",
+      "PartitionKeyName": "string",
+      "PartitionKeyType": "string",
+      "Region": "string",
+      "StreamArn": "string"
+    },
+    "dynamo1ee24fb6": {
       "Arn": "string",
       "Name": "string",
       "PartitionKeyName": "string",

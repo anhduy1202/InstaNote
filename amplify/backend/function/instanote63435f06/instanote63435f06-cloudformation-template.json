@@ -24,6 +24,10 @@
       "Type": "String",
       "Default": "storageInstaNoteNoteArn"
     },
+    "functioninstanotelayer17fafae7Arn": {
+      "Type": "String",
+      "Default": "functioninstanotelayer17fafae7Arn"
+    },
     "openaiApiKey": {
       "Type": "String"
     }
@@ -93,7 +97,11 @@
           ]
         },
         "Runtime": "nodejs18.x",
-        "Layers": [],
+        "Layers": [
+          {
+            "Ref": "functioninstanotelayer17fafae7Arn"
+          }
+        ],
         "Timeout": 25
       }
     },

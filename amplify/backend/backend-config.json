@@ -42,25 +42,16 @@
     }
   },
   "function": {
-    "InstaNoteNoteTrigger56755564": {
+    "instanote63435f06": {
       "build": true,
       "dependsOn": [
         {
           "attributes": [
-            "Name",
-            "Arn",
-            "StreamArn"
+            "Arn"
           ],
-          "category": "storage",
-          "resourceName": "InstaNoteNote"
-        }
-      ],
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
-    "instanote63435f06": {
-      "build": true,
-      "dependsOn": [
+          "category": "function",
+          "resourceName": "instanotelayer17fafae7"
+        },
         {
           "attributeEnvMap": {
             "Arn": "TABLE_ARN",
@@ -71,7 +62,7 @@
             "Arn"
           ],
           "category": "storage",
-          "resourceName": "InstaNoteNote"
+          "resourceName": "dynamo1ee24fb6"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -84,22 +75,6 @@
     }
   },
   "parameters": {
-    "AMPLIFY_function_InstaNoteNoteTrigger56755564_deploymentBucketName": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "InstaNoteNoteTrigger56755564"
-        }
-      ]
-    },
-    "AMPLIFY_function_InstaNoteNoteTrigger56755564_s3Key": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "InstaNoteNoteTrigger56755564"
-        }
-      ]
-    },
     "AMPLIFY_function_instanote63435f06_deploymentBucketName": {
       "usedBy": [
         {
@@ -143,6 +118,10 @@
   },
   "storage": {
     "InstaNoteNote": {
+      "providerPlugin": "awscloudformation",
+      "service": "DynamoDB"
+    },
+    "dynamo1ee24fb6": {
       "providerPlugin": "awscloudformation",
       "service": "DynamoDB"
     }

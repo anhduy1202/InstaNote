@@ -29,6 +29,10 @@ const awsmobile = {
         {
             "tableName": "Note-dev",
             "region": "us-east-1"
+        },
+        {
+            "tableName": "Notes-dev",
+            "region": "us-east-1"
         }
     ],
     "aws_cloud_logic_custom": [

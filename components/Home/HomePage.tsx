@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useAuthenticator } from "@aws-amplify/ui-react";
-import { API } from "aws-amplify";
+import { Auth, API } from "aws-amplify";
 import Task from "../Task/Task";
 import { Loading } from "../Loader/Loader";
 
@@ -16,6 +16,7 @@ const HomePage = () => {
     const myInit = {
       body: {
         prompt: input,
+        userId: user.username
       },
     };
     return await API.post(apiName, path, myInit);
@@ -25,6 +26,7 @@ const HomePage = () => {
     const response = await postData();
     setTaskList(response.data);
     setLoading(false);
+    setInput('');
   };
   return (
     <section className="flex items-center flex-col gap-10 mt-10 text-lg">
@@ -38,7 +40,7 @@ const HomePage = () => {
         />
         <button
           type='submit'
-          className="p-1 bg-blue-400"
+          className="p-1 bg-blue-500"
         >
           Create
         </button>

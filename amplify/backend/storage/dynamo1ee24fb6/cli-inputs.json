@@ -1,0 +1,10 @@
+{
+  "resourceName": "dynamo1ee24fb6",
+  "tableName": "Notes",
+  "partitionKey": {
+    "fieldName": "id",
+    "fieldType": "string"
+  },
+  "gsi": [],
+  "triggerFunctions": []
+}
