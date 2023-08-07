@@ -25,3 +25,8 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+.amplify-menu-trigger {
+  --amplify-components-button-border-color: white;
+  --amplify-components-button-color: white;
+}

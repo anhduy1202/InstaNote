@@ -17,7 +17,7 @@ const HomePage = () => {
     const res = await axios.post("/", input);
   };
   return (
-    <section className="basis-[80%] flex items-center flex-col gap-10 mt-10 text-lg">
+    <section className="flex items-center flex-col gap-10 mt-10 text-lg">
       <h1>Give me your task, I'll create notes</h1>
       <form action="" onSubmit={submitForm}>
         <input
@@ -30,7 +30,7 @@ const HomePage = () => {
           Create
         </button>
       </form>
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid md:grid-cols-3 gap-4">
         {taskList.map((task, id) => {
           return <Task key={id} task={task} id={id} />;
         })}

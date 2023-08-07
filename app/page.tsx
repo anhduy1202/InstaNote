@@ -4,7 +4,7 @@ import { Authenticator } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
 import awsconfig from "../src/aws-exports";
 import HomePage from "@/components/Home/HomePage";
-import SideBar from "@/components/Home/SideBar";
+import MenuNav from "@/components/Home/Menu";
 
 Amplify.configure(awsconfig);
 
@@ -22,10 +22,8 @@ const components = {
 export default function App() {
   return (
     <Authenticator components={components}>
-      <section className="flex">
-        <HomePage />
-        <SideBar />
-      </section>
+      <MenuNav />
+      <HomePage />
     </Authenticator>
   );
 }
