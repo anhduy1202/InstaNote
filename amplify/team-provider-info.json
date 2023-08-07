@@ -19,20 +19,16 @@
       "function": {
         "instanote63435f06": {
           "deploymentBucketName": "amplify-instanote-dev-13717-deployment",
-          "s3Key": "amplify-builds/instanote63435f06-562b6b486444316c4a73-build.zip",
-          "openaiApiKey": "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"
-        },
-        "InstaNoteNoteTrigger56755564": {
-          "deploymentBucketName": "amplify-instanote-dev-13717-deployment",
-          "s3Key": "amplify-builds/InstaNoteNoteTrigger56755564-676f5161523568775378-build.zip"
+          "s3Key": "amplify-builds/instanote63435f06-35684a4e706f4b2b5036-build.zip"
         },
         "instanotelayer17fafae7": {
           "deploymentBucketName": "amplify-instanote-dev-13717-deployment",
-          "s3Key": "amplify-builds/instanotelayer17fafae7-LambdaLayerVersionfb4b8a4c-build.zip"
+          "s3Key": "amplify-builds/instanotelayer17fafae7-LambdaLayerVersion5bfa29fb-build.zip"
         }
       },
       "storage": {
-        "InstaNoteNote": {}
+        "InstaNoteNote": {},
+        "dynamo1ee24fb6": {}
       },
       "api": {
         "apia67ae079": {}

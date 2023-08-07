@@ -16,7 +16,7 @@ const HomePage = () => {
     const myInit = {
       body: {
         prompt: input,
-        userId: user.username
+        userId: user.username,
       },
     };
     return await API.post(apiName, path, myInit);
@@ -26,22 +26,20 @@ const HomePage = () => {
     const response = await postData();
     setTaskList(response.data);
     setLoading(false);
-    setInput('');
+    setInput("");
   };
   return (
     <section className="flex items-center flex-col gap-10 mt-10 text-lg">
       <h1>Give me your task, I'll create notes</h1>
       <form action="" onSubmit={submitForm}>
         <input
+          value={input}
           onChange={(e) => setInput(e.target.value)}
           className="p-1 text-black"
           type="text"
           placeholder="Ex: Make egg fried rice"
         />
-        <button
-          type='submit'
-          className="p-1 bg-blue-500"
-        >
+        <button type="submit" className="p-1 bg-blue-500">
           Create
         </button>
       </form>
@@ -56,6 +54,7 @@ const HomePage = () => {
           })}
         </div>
       )}
+      <p>Made by Daniel Truong</p>
     </section>
   );
 };

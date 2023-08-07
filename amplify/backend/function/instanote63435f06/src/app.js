@@ -205,7 +205,7 @@ app.post(path, async function (req, res) {
       messages: [
         {
           role: "user",
-          content: `"This prompt may be written in mixed language, write me a step by step note labeled with number since I have to parse the response to "${req.body["prompt"]}", it's a note so keep it short and language friendly and the result should be in either Vietnamese or English"`,
+          content: `"This prompt may be written in mixed language, write me a step by step note labeled with number (example: 1. do this 2. do that) to do this very important task: "${req.body["prompt"]}", it's a note so keep it short and language friendly, the result should be in Vietnamese if the important task is in Vietnamese and in English if the task in English"`,
         },
       ],
       temperature: 0.8,
