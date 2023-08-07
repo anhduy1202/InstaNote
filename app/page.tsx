@@ -3,6 +3,8 @@ import { Amplify } from "aws-amplify";
 import { Authenticator } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
 import awsconfig from "../src/aws-exports";
+import HomePage from "@/components/Home/HomePage";
+import SideBar from "@/components/Home/SideBar";
 
 Amplify.configure(awsconfig);
 
@@ -11,7 +13,7 @@ const components = {
     return (
       <div className="text-center my-10">
         <h1 className="text-[4rem] font-mono">InstaNote</h1>
-        <p className="text-[2rem]">Post it out loud</p>
+        <p className="text-[2rem]">Generate notes for your task</p>
       </div>
     );
   },
@@ -20,12 +22,10 @@ const components = {
 export default function App() {
   return (
     <Authenticator components={components}>
-      {({ signOut, user }) => (
-        <main>
-          <h1>Hello {user.username}</h1>
-          <button onClick={signOut}>Sign out</button>
-        </main>
-      )}
+      <section className="flex">
+        <HomePage />
+        <SideBar />
+      </section>
     </Authenticator>
   );
 }
