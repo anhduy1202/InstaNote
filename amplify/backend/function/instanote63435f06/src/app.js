@@ -13,7 +13,8 @@ const {
   DynamoDBDocumentClient,
   GetCommand,
   PutCommand,
-  QueryCommand,
+  UpdateCommand,
+  ScanCommand,
 } = require("@aws-sdk/lib-dynamodb");
 const awsServerlessExpressMiddleware = require("aws-serverless-express/middleware");
 const bodyParser = require("body-parser");
@@ -64,99 +65,32 @@ const convertUrlType = (param, type) => {
   }
 };
 
-/********************************
- * HTTP Get method for list objects *
- ********************************/
+/*****************************************
+ * HTTP Get method for get single object *
+ *****************************************/
 
-app.get(path, async function (req, res) {
-  const condition = {};
-  condition[partitionKeyName] = {
-    ComparisonOperator: "EQ",
-  };
-
-  if (userIdPresent && req.apiGateway) {
-    condition[partitionKeyName]["AttributeValueList"] = [
-      req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH,
-    ];
-  } else {
-    try {
-      condition[partitionKeyName]["AttributeValueList"] = [
-        convertUrlType(req.params[partitionKeyName], partitionKeyType),
-      ];
-    } catch (err) {
-      res.statusCode = 500;
-      res.json({ error: "Wrong column type " + err });
-    }
-  }
-
-  let queryParams = {
+app.get(path + "/:id", async function (req, res) {
+  let scanItemParams = {
+    FilterExpression: "username = :username",
+    ExpressionAttributeValues: {
+      ":username": req.params.id,
+    },
+    ProjectionExpression: "id, content, favorite",
     TableName: tableName,
-    KeyConditions: condition,
   };
 
   try {
-    const data = await ddbDocClient.send(new QueryCommand(queryParams));
-    res.json(data.Items);
+    const data = await ddbDocClient.send(new ScanCommand(scanItemParams));
+    if (data.Items) {
+      res.json(data);
+    } else {
+      res.json({ error: "Could not find items" });
+    }
   } catch (err) {
     res.statusCode = 500;
     res.json({ error: "Could not load items: " + err.message });
   }
 });
-
-/*****************************************
- * HTTP Get method for get single object *
- *****************************************/
-
-app.get(
-  path + "/object" + hashKeyPath + sortKeyPath,
-  async function (req, res) {
-    const params = {};
-    if (userIdPresent && req.apiGateway) {
-      params[partitionKeyName] =
-        req.apiGateway.event.requestContext.identity.cognitoIdentityId ||
-        UNAUTH;
-    } else {
-      params[partitionKeyName] = req.params[partitionKeyName];
-      try {
-        params[partitionKeyName] = convertUrlType(
-          req.params[partitionKeyName],
-          partitionKeyType
-        );
-      } catch (err) {
-        res.statusCode = 500;
-        res.json({ error: "Wrong column type " + err });
-      }
-    }
-    if (hasSortKey) {
-      try {
-        params[sortKeyName] = convertUrlType(
-          req.params[sortKeyName],
-          sortKeyType
-        );
-      } catch (err) {
-        res.statusCode = 500;
-        res.json({ error: "Wrong column type " + err });
-      }
-    }
-
-    let getItemParams = {
-      TableName: tableName,
-      Key: params,
-    };
-
-    try {
-      const data = await ddbDocClient.send(new GetCommand(getItemParams));
-      if (data.Item) {
-        res.json(data.Item);
-      } else {
-        res.json(data);
-      }
-    } catch (err) {
-      res.statusCode = 500;
-      res.json({ error: "Could not load items: " + err.message });
-    }
-  }
-);
 
 /************************************
  * HTTP put method for insert object *
@@ -167,14 +101,25 @@ app.put(path, async function (req, res) {
     req.body["userId"] =
       req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
   }
-
-  let putItemParams = {
+  let updateItemParams = {
     TableName: tableName,
-    Item: req.body,
+    Key: {
+      id: req.body["id"],
+    },
+    UpdateExpression: "set favorite = :fav",
+    ExpressionAttributeValues: {
+      ":fav": "true",
+    },
+    ReturnValues: "ALL_NEW",
   };
+  if (req.body["favorite"] == true) {
+    updateItemParams.ExpressionAttributeValues = {
+      ":fav": "false",
+    };
+  }
   try {
-    let data = await ddbDocClient.send(new PutCommand(putItemParams));
-    res.json({ success: "put call succeed!", url: req.url, data: data });
+    let data = await ddbDocClient.send(new UpdateCommand(updateItemParams));
+    res.json(data);
   } catch (err) {
     res.statusCode = 500;
     res.json({ error: err, url: req.url, body: req.body });
@@ -211,7 +156,7 @@ app.post(path, async function (req, res) {
       temperature: 0.8,
       max_tokens: 256,
     });
-    // // Split the string by the newline character ("\n") and remove any empty lines using filter()
+    // Split the string by the newline character ("\n") and remove any empty lines using filter()
     const filteredResponse = response.data.choices[0].message.content
       .split("\n")
       .filter((step) => step.trim() !== "");
@@ -222,70 +167,12 @@ app.post(path, async function (req, res) {
     );
     putItemParams.Item.content = finalResponse.join("\n");
     let data = await ddbDocClient.send(new PutCommand(putItemParams));
-    res.json({ data: finalResponse });
+    res.json({ data: finalResponse, info: putItemParams.Item});
   } catch (err) {
     res.statusCode = 500;
     res.json({ error: err, url: req.url, body: req.body });
   }
-  // try {
-  //   let data = await ddbDocClient.send(new PutCommand(putItemParams));
-  //   res.json({ success: 'post call succeed!', url: req.url, data: data })
-  // } catch (err) {
-  //   res.statusCode = 500;
-  //   res.json({ error: err, url: req.url, body: req.body });
-  // }
 });
-
-/**************************************
- * HTTP remove method to delete object *
- ***************************************/
-
-app.delete(
-  path + "/object" + hashKeyPath + sortKeyPath,
-  async function (req, res) {
-    const params = {};
-    if (userIdPresent && req.apiGateway) {
-      params[partitionKeyName] =
-        req.apiGateway.event.requestContext.identity.cognitoIdentityId ||
-        UNAUTH;
-    } else {
-      params[partitionKeyName] = req.params[partitionKeyName];
-      try {
-        params[partitionKeyName] = convertUrlType(
-          req.params[partitionKeyName],
-          partitionKeyType
-        );
-      } catch (err) {
-        res.statusCode = 500;
-        res.json({ error: "Wrong column type " + err });
-      }
-    }
-    if (hasSortKey) {
-      try {
-        params[sortKeyName] = convertUrlType(
-          req.params[sortKeyName],
-          sortKeyType
-        );
-      } catch (err) {
-        res.statusCode = 500;
-        res.json({ error: "Wrong column type " + err });
-      }
-    }
-
-    let removeItemParams = {
-      TableName: tableName,
-      Key: params,
-    };
-
-    try {
-      let data = await ddbDocClient.send(new DeleteCommand(removeItemParams));
-      res.json({ url: req.url, data: data });
-    } catch (err) {
-      res.statusCode = 500;
-      res.json({ error: err, url: req.url });
-    }
-  }
-);
 
 app.listen(3000, function () {
   console.log("App started");

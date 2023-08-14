@@ -19,7 +19,8 @@
       "function": {
         "instanote63435f06": {
           "deploymentBucketName": "amplify-instanote-dev-13717-deployment",
-          "s3Key": "amplify-builds/instanote63435f06-35684a4e706f4b2b5036-build.zip"
+          "s3Key": "amplify-builds/instanote63435f06-645a694e673865525a67-build.zip",
+          "openaiApiKey": "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"
         },
         "instanotelayer17fafae7": {
           "deploymentBucketName": "amplify-instanote-dev-13717-deployment",
